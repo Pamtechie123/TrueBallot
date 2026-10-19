@@ -1,0 +1,28 @@
+# Optional: lets Render set the service up for you (New > Blueprint).
+# Values marked "sync: false" are secrets you type in on the Render dashboard.
+services:
+  - type: web
+    name: trueballot
+    runtime: docker
+    plan: free
+    envVars:
+      - key: APP_URL
+        sync: false            # e.g. https://trueballot.onrender.com
+      - key: APP_DEBUG
+        value: "false"
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_NAME
+        value: defaultdb
+      - key: DB_USER
+        value: avnadmin
+      - key: DB_PASS
+        sync: false
+      - key: BREVO_API_KEY
+        sync: false
+      - key: MAIL_FROM_EMAIL
+        sync: false            # the sender email you verified on Brevo
+      - key: MAIL_FROM_NAME
+        value: TrueBallot

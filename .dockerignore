@@ -1,0 +1,4 @@
+.git
+.env
+storage/logs/*
+storage/mail/*
