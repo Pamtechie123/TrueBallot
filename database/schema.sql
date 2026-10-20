@@ -13,7 +13,7 @@ CREATE TABLE users (
   password_hash     VARCHAR(255) NOT NULL,
   age               TINYINT UNSIGNED NOT NULL,
   state             VARCHAR(100) NOT NULL,
-  sex               ENUM('male','female') NOT NULL DEFAULT 'no',
+  sex               ENUM('male','female') NOT NULL DEFAULT 'male',
   disability_status ENUM('yes','no') NOT NULL DEFAULT 'no',
   role              ENUM('voter','admin') NOT NULL DEFAULT 'voter',
   status            ENUM('pending','approved','rejected','suspended') NOT NULL DEFAULT 'pending',
@@ -136,4 +136,4 @@ CREATE TABLE audit_logs (
 INSERT INTO users (full_name, email, password_hash, age, state, sex, disability_status, role, status)
 VALUES ('System Administrator', 'admin@trueballot.test',
         '$2y$10$r7XYBIBczf/tB42Lvxi0S.vlO/7k9w7F0vY3zjgNqb4drzt.l/mdS',
-        30, 'N/A', 'prefer_not_to_say', 'prefer_not_to_say', 'admin', 'approved');
+        30, 'N/A', 'male', 'no', 'admin', 'approved');
