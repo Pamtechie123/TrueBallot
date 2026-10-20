@@ -33,6 +33,8 @@ $error   = Session::flashed('error');
                     <a href="<?= e(url('/candidates/apply')) ?>">Apply</a>
                 <?php endif; ?>
                 <a href="<?= e(url('/results')) ?>">Results</a>
+                                <a href="<?= e(url('/results')) ?>">Results</a>
+                <a href="<?= e(url('/profile')) ?>">My profile</a>
                 <form class="inline-form" method="post" action="<?= e(url('/logout')) ?>">
                     <?= csrf_field() ?>
                     <button type="submit" class="link-button">Log out (<?= e($currentUser->fullName()) ?>)</button>

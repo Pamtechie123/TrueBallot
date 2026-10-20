@@ -41,6 +41,20 @@ final class Notifier
             'If this was you, you can ignore this email. If not, reset your password right away.',
         ], 'Reset password', '/forgot-password');
     }
+        /** A voter changed their details: tell them it needs approval again, and tell the admins. */
+    public static function detailsNeedReview(User $user): void
+    {
+        self::send($user, 'Your details were updated and need approval', [
+            'We saved the changes to your details.',
+            'Because your details changed, an administrator must approve your account again. You cannot vote or apply until then. We will email you as soon as it is done.',
+        ]);
+
+        foreach (User::admins() as $admin) {
+            self::send($admin, 'A voter changed their details', [
+                '<strong>' . e($user->fullName()) . '</strong> (' . e($user->email()) . ') changed their details and is waiting for approval again.',
+            ], 'Review voters', '/admin/voters?status=pending');
+        }
+    }
 
     public static function voterStatus(User $user, string $status): void
     {

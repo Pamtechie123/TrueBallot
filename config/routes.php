@@ -33,6 +33,9 @@ return [
     'POST /vote/cast'                => [VotingController::class, 'cast'],
     'GET /results'                   => [ResultController::class, 'index'],
     'GET /photo'                     => [ProfileController::class, 'photo'],
+    'GET /profile'                   => [ProfileController::class, 'edit'],
+    'POST /profile'                  => [ProfileController::class, 'update'],
+    'POST /profile/password'         => [ProfileController::class, 'changePassword'],
     'POST /profile/photo'            => [ProfileController::class, 'uploadPhoto'],
     'POST /profile/photo/delete'     => [ProfileController::class, 'deletePhoto'],
 

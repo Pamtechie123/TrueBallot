@@ -175,6 +175,15 @@ abstract class User extends Model implements RoleInterface
         static::run('UPDATE users SET password_hash = ? WHERE id = ?', [password_hash($newPassword, PASSWORD_DEFAULT), $id]);
     }
 
+    /** Save the details a user can edit about themselves. The email is never changed here. */
+    public static function updateDetails(int $id, array $data): void
+    {
+        static::run(
+            'UPDATE users SET full_name = ?, age = ?, state = ?, sex = ?, disability_status = ? WHERE id = ?',
+            [$data['full_name'], (int) $data['age'], $data['state'], $data['sex'], $data['disability_status'], $id]
+        );
+    }
+
     // ---- statistics for the admin dashboard ----
 
     /** Voters grouped by state, sex or disability_status. */
