@@ -68,8 +68,8 @@
         </div>
 
         <div class="field">
-            <label for="photo">Your photo <span class="muted">(optional)</span></label>
-            <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/webp" data-max-bytes="<?= \App\Services\PhotoStorage::MAX_BYTES ?>" <?= field_attrs('photo') ?>>
+                        <label for="photo">Your photo</label>
+            <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/webp" data-max-bytes="<?= \App\Services\PhotoStorage::MAX_BYTES ?>" required <?= field_attrs('photo') ?>>
             <p class="hint">A clear photo of your face. JPG, PNG or WebP, up to 2 MB. It appears on your voter card.</p>
             <?= field_error('photo') ?>
         </div>

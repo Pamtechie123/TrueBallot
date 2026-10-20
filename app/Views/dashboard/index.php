@@ -48,12 +48,9 @@
             </div>
             <button type="submit" class="btn btn-secondary">Upload</button>
         </form>
-        <?php if ($hasPhoto): ?>
-            <form class="inline-form" method="post" action="<?= e(url('/profile/photo/delete')) ?>">
-                <?= csrf_field() ?>
-                <button type="submit" class="link-button" data-confirm="Remove your photo?">Remove my photo</button>
-            </form>
-        <?php endif; ?>
+               // The photo is compulsory, so it can only be replaced, never removed.
+        Session::flash('error', 'Your photo is required. You can replace it with a different one, but not remove it.');
+        $this->redirect('/dashboard');
     </section>
 
     <section aria-labelledby="elections-heading">

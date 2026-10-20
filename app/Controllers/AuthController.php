@@ -58,10 +58,12 @@ final class AuthController extends Controller
             'disability_status'=> 'Disability status',
         ]);
 
-        // The photo is optional. If one was chosen it must be a real picture.
+        // The photo is compulsory and must be a real picture.
         $errors = $validator->fails() ? $validator->errors() : [];
         $photo  = null;
-        if (PhotoStorage::wasUploaded($_FILES['photo'] ?? null)) {
+        if (!PhotoStorage::wasUploaded($_FILES['photo'] ?? null)) {
+            $errors['photo'] = 'Please add your photo. It is required.';
+        } else {
             try {
                 $photo = PhotoStorage::prepare($_FILES['photo']);
             } catch (\DomainException $e) {
