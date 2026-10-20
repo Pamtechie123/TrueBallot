@@ -48,9 +48,6 @@
             </div>
             <button type="submit" class="btn btn-secondary">Upload</button>
         </form>
-               // The photo is compulsory, so it can only be replaced, never removed.
-        Session::flash('error', 'Your photo is required. You can replace it with a different one, but not remove it.');
-        $this->redirect('/dashboard');
     </section>
 
     <section aria-labelledby="elections-heading">

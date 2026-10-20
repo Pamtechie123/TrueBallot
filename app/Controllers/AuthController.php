@@ -50,8 +50,8 @@ final class AuthController extends Controller
             'password_confirm'  => ['required', 'same:password'],
             'age'               => ['required', 'int', 'between:18,120'],
             'state'             => ['required', 'max:100'],
-            'sex'               => ['required', 'in:male,female,other,prefer_not_to_say'],
-            'disability_status' => ['required', 'in:yes,no,prefer_not_to_say'],
+            'sex'               => ['required', 'in:male,female'],
+            'disability_status' => ['required', 'in:yes,no'],
         ], [
             'full_name'        => 'Full name',
             'password_confirm' => 'Password confirmation',
