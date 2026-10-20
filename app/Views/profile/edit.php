@@ -43,8 +43,8 @@ $isAdmin = $user->canAccess(RoleInterface::AREA_ADMIN);
             <div class="field">
                 <label for="sex">Sex</label>
                 <select id="sex" name="sex" required <?= field_attrs('sex') ?>>
-                    <?php foreach (['male', 'female', 'other', 'prefer_not_to_say'] as $option): ?>
-                        <option value="<?= e($option) ?>" <?= old('sex', $user->sex()) === $option ? 'selected' : '' ?>><?= e(label($option)) ?></option>
+                    <?php if (!in_array(old('sex', $user->sex()), ['male', 'female'], true)): ?><option value="" selected>Choose...</option><?php endif; ?>
+                    <?php foreach (['male', 'female'] as $option): ?>                        <option value="<?= e($option) ?>" <?= old('sex', $user->sex()) === $option ? 'selected' : '' ?>><?= e(label($option)) ?></option>
                     <?php endforeach; ?>
                 </select>
                 <?= field_error('sex') ?>
@@ -52,8 +52,8 @@ $isAdmin = $user->canAccess(RoleInterface::AREA_ADMIN);
             <div class="field">
                 <label for="disability_status">Do you have a disability?</label>
                 <select id="disability_status" name="disability_status" required <?= field_attrs('disability_status') ?>>
-                    <?php foreach (['yes', 'no', 'prefer_not_to_say'] as $option): ?>
-                        <option value="<?= e($option) ?>" <?= old('disability_status', $user->disabilityStatus()) === $option ? 'selected' : '' ?>><?= e(label($option)) ?></option>
+                    <?php if (!in_array(old('disability_status', $user->disabilityStatus()), ['yes', 'no'], true)): ?><option value="" selected>Choose...</option><?php endif; ?>
+                    <?php foreach (['yes', 'no'] as $option): ?>                        <option value="<?= e($option) ?>" <?= old('disability_status', $user->disabilityStatus()) === $option ? 'selected' : '' ?>><?= e(label($option)) ?></option>
                     <?php endforeach; ?>
                 </select>
                 <?= field_error('disability_status') ?>

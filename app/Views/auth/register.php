@@ -49,8 +49,9 @@
             <div class="field">
                 <label for="sex">Sex</label>
                 <select id="sex" name="sex" required <?= field_attrs('sex') ?>>
-                    <?php foreach (['male', 'female', 'other', 'prefer_not_to_say'] as $option): ?>
-                        <option value="<?= e($option) ?>" <?= old('sex', 'prefer_not_to_say') === $option ? 'selected' : '' ?>><?= e(label($option)) ?></option>
+                                     <option value="">Choose...</option>
+                    <?php foreach (['male', 'female'] as $option): ?>
+                        <option value="<?= e($option) ?>" <?= old('sex') === $option ? 'selected' : '' ?>><?= e(label($option)) ?></option>
                     <?php endforeach; ?>
                 </select>
                 <?= field_error('sex') ?>
@@ -58,9 +59,10 @@
             <div class="field">
                 <label for="disability_status">Do you have a disability?</label>
                 <select id="disability_status" name="disability_status" required aria-describedby="disability-hint" <?= has_error('disability_status') ? 'aria-invalid="true"' : '' ?>>
-                    <?php foreach (['yes', 'no', 'prefer_not_to_say'] as $option): ?>
-                        <option value="<?= e($option) ?>" <?= old('disability_status', 'prefer_not_to_say') === $option ? 'selected' : '' ?>><?= e(label($option)) ?></option>
-                    <?php endforeach; ?>
+                    <option value="">Choose...</option>
+                    <?php foreach (['yes', 'no'] as $option): ?>
+                        <option value="<?= e($option) ?>" <?= old('disability_status') === $option ? 'selected' : '' ?>><?= e(label($option)) ?></option>
+                <?php endforeach; ?>
                 </select>
                 <p class="hint" id="disability-hint">Used only to provide accessible voting support.</p>
                 <?= field_error('disability_status') ?>
