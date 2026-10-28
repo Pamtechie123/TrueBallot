@@ -1,6 +1,7 @@
 <?php
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;
+use App\Controllers\CandidateAdminController;
 use App\Controllers\CandidateController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
@@ -24,11 +25,11 @@ return [
     'GET /reset-password'            => [PasswordController::class, 'showReset'],
     'POST /reset-password'           => [PasswordController::class, 'reset'],
 
+    // candidate photos (logged-in users only)
+    'GET /candidate-photo'           => [CandidateController::class, 'photo'],
+
     // voter
     'GET /dashboard'                 => [DashboardController::class, 'index'],
-    'GET /candidates/apply'          => [CandidateController::class, 'showApply'],
-    'POST /candidates/apply'         => [CandidateController::class, 'apply'],
-    'GET /candidates/applications'   => [CandidateController::class, 'myApplications'],
     'GET /vote'                      => [VotingController::class, 'index'],
     'POST /vote/cast'                => [VotingController::class, 'cast'],
     'GET /results'                   => [ResultController::class, 'index'],
@@ -50,7 +51,12 @@ return [
     'POST /admin/elections/end-voting'         => [AdminController::class, 'endVoting'],
     'POST /admin/elections/publish'  => [AdminController::class, 'publishResults'],
     'POST /admin/positions/create'   => [AdminController::class, 'addPosition'],
-    'GET /admin/candidates'          => [AdminController::class, 'candidates'],
-    'POST /admin/candidates/review'  => [AdminController::class, 'reviewApplication'],
-    'POST /admin/candidates/fee'     => [AdminController::class, 'updateFee'],
+
+    // administrator: candidates (only the administrator can add them)
+    'GET /admin/candidates'          => [CandidateAdminController::class, 'index'],
+    'GET /admin/candidates/new'      => [CandidateAdminController::class, 'create'],
+    'POST /admin/candidates/create'  => [CandidateAdminController::class, 'store'],
+    'GET /admin/candidates/edit'     => [CandidateAdminController::class, 'edit'],
+    'POST /admin/candidates/update'  => [CandidateAdminController::class, 'update'],
+    'POST /admin/candidates/delete'  => [CandidateAdminController::class, 'delete'],
 ];

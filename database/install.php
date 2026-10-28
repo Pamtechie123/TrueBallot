@@ -1,5 +1,5 @@
 <?php
-// Creates the TrueBallot tables on Aiven (or any MySQL) by running database/schema.sql.
+//  This file creates the TrueBallot tables on Aiven (or any MySQL) by running database/schema.sql.
 //   C:\xampp\php\php.exe database\install.php HOST PORT PASSWORD
 // It uses user "avnadmin", database "defaultdb" and config/ca.pem for the secure connection.
 

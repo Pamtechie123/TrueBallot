@@ -96,14 +96,13 @@ final class Vote extends Model
     {
         $rows = static::run(
             'SELECT p.id AS position_id, p.title AS position_title,
-                    c.id AS candidate_id, a.display_name, COUNT(v.id) AS total
+                    c.id AS candidate_id, c.full_name AS display_name, COUNT(v.id) AS total
              FROM positions p
              LEFT JOIN candidates c ON c.position_id = p.id
-             LEFT JOIN candidate_applications a ON a.id = c.application_id
              LEFT JOIN votes v ON v.candidate_id = c.id
              WHERE p.election_id = ?
-             GROUP BY p.id, p.title, c.id, a.display_name
-             ORDER BY p.id, total DESC, a.display_name',
+             GROUP BY p.id, p.title, c.id, c.full_name
+             ORDER BY p.id, total DESC, c.full_name',
             [$electionId]
         )->fetchAll();
 

@@ -24,13 +24,12 @@
     <h2 id="elections-heading">Elections</h2>
     <div class="tiles">
         <a class="tile tile-link" href="<?= e(url('/admin/elections')) ?>"><p class="tile-number"><?= (int) $totals['elections'] ?></p><p class="tile-label">Elections</p></a>
-        <a class="tile tile-link" href="<?= e(url('/admin/candidates?status=pending')) ?>"><p class="tile-number"><?= (int) $totals['pendingApplications'] ?></p><p class="tile-label">Applications to review</p></a>
-        <div class="tile"><p class="tile-number"><?= (int) $totals['candidates'] ?></p><p class="tile-label">Candidates on ballots</p></div>
+        <a class="tile tile-link" href="<?= e(url('/admin/candidates')) ?>"><p class="tile-number"><?= (int) $totals['candidates'] ?></p><p class="tile-label">Candidates on ballots</p></a>
         <a class="tile tile-link" href="<?= e(url('/results')) ?>"><p class="tile-number"><?= (int) $totals['votes'] ?></p><p class="tile-label">Votes cast</p></a>
     </div>
     <p>
         <a class="btn" href="<?= e(url('/admin/elections')) ?>">Manage elections</a>
-        <a class="btn btn-secondary" href="<?= e(url('/admin/candidates')) ?>">Review candidates</a>
+        <a class="btn btn-secondary" href="<?= e(url('/admin/candidates')) ?>">Manage candidates</a>
     </p>
 </section>
 

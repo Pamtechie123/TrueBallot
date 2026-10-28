@@ -50,7 +50,6 @@ final class AdminController extends Controller
                 'elections'           => Election::countAll(),
                 'candidates'          => Candidate::countAll(),
                 'votes'               => Vote::countAll(),
-                'pendingApplications' => CandidateApplication::countByStatus('pending'),
             ],
             'ageBands'     => User::ageBands(),
             'byState'      => User::breakdown('state'),

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Core;
 
 /**
- * One place that turns every problem into a proper HTTP status code and a friendly page.
  * Technical details go to the log file, and are shown on screen only when debug is on.
  */
 final class ErrorHandler

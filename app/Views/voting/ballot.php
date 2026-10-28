@@ -34,11 +34,11 @@
                             ?>
                             <div class="option">
                                 <input type="radio" id="<?= $inputId ?>" name="choice[<?= $position->id() ?>]" value="<?= $candidate->id() ?>">
-                                <?php if (\App\Services\PhotoStorage::exists($candidate->userId())): ?>
-                                    <img class="candidate-photo" src="<?= e(url('/photo?user=' . $candidate->userId() . '&v=' . \App\Services\PhotoStorage::version($candidate->userId()))) ?>" alt="" width="64" height="80">
+                                <?php if ($candidate->hasPhoto()): ?>
+                                    <img class="candidate-photo" src="<?= e($candidate->photoUrl()) ?>" alt="" width="64" height="80">
                                 <?php endif; ?>
                                 <label for="<?= $inputId ?>">
-                                    <?= e($candidate->displayName()) ?>
+                                    <?= e($candidate->displayName()) ?><?= $candidate->party() !== '' ? ' <span class="muted">(' . e($candidate->party()) . ')</span>' : '' ?>
                                     <span class="option-manifesto"><?= e($candidate->manifesto()) ?></span>
                                 </label>
                             </div>

@@ -1,7 +1,7 @@
 -- TrueBallot database
 -- Works on XAMPP (phpMyAdmin) and on Aiven MySQL.
 --
--- XAMPP: create a database called "trueballot", open its SQL tab, paste this file and click Go.
+-- XAMPP: create a database called "trueballot".
 -- Aiven: connect to your "defaultdb" database (e.g. with MySQL Workbench or the mysql command) and run this file.
 
 SET NAMES utf8mb4;

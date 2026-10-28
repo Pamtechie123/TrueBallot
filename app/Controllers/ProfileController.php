@@ -23,7 +23,7 @@ final class ProfileController extends Controller
         return RoleInterface::AREA_ANY;   // each action adds its own check
     }
 
-        // ------------------------------------------------------------------ edit details and password
+    // ------------------------------------------------------------------ edit details and password
 
     public function edit(): void
     {
@@ -46,8 +46,8 @@ final class ProfileController extends Controller
             'full_name'         => ['required', 'min:3', 'max:150'],
             'age'               => ['required', 'int', 'between:18,120'],
             'state'             => ['required', 'max:100'],
-            'sex'               => ['required', 'in:male,female,other,prefer_not_to_say'],
-            'disability_status' => ['required', 'in:yes,no,prefer_not_to_say'],
+            'sex'               => ['required', 'in:male,female'],
+            'disability_status' => ['required', 'in:yes,no'],
         ], ['full_name' => 'Full name', 'disability_status' => 'Disability status']);
 
         if ($validator->fails()) {
@@ -120,9 +120,10 @@ final class ProfileController extends Controller
         Session::flash('success', 'Your password was changed.');
         $this->redirect('/profile');
     }
+
     /**
-     * Sends a picture. Everyone can see their own photo and the photos of candidates on a ballot.
-     * Administrators can see any user's photo. Use ?user=ID for someone else's photo.
+     * Sends a voter's photo. Everyone can see their own. Administrators can see any user's photo.
+     * (Candidate photos are sent by CandidateController::photo.) Use ?user=ID for someone else's photo.
      */
     public function photo(): void
     {
@@ -130,8 +131,7 @@ final class ProfileController extends Controller
         $target = isset($_GET['user']) ? (int) $_GET['user'] : $user->id();
 
         $allowed = $target === $user->id()
-            || $user->canAccess(RoleInterface::AREA_ADMIN)
-            || Candidate::isCandidate($target);
+            || $user->canAccess(RoleInterface::AREA_ADMIN);
 
         $image = $allowed ? PhotoStorage::data($target) : null;
         if ($image === null) {
@@ -169,10 +169,8 @@ final class ProfileController extends Controller
     {
         Auth::authorise(RoleInterface::AREA_VOTING);
 
-        PhotoStorage::delete(Auth::id());
-
-        Logger::info('Photo removed for user #' . Auth::id());
-        Session::flash('success', 'Your photo was removed.');
+        // The photo is compulsory, so it can only be replaced, never removed.
+        Session::flash('error', 'Your photo is required. You can replace it with a different one, but not remove it.');
         $this->redirect('/dashboard');
     }
 }

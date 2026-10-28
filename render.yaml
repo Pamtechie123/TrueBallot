@@ -23,6 +23,6 @@ services:
       - key: BREVO_API_KEY
         sync: false
       - key: MAIL_FROM_EMAIL
-        sync: false            # the sender email you verified on Brevo
+        sync: false            # the sender email i verified on Brevo
       - key: MAIL_FROM_NAME
         value: TrueBallot

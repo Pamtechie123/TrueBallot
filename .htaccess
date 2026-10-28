@@ -1,6 +1,6 @@
 RewriteEngine On
 
-# Lets you open http://localhost/TrueBallot/ and keeps app/, config/ and storage/ out of reach:
+# Lets me open http://localhost/TrueBallot/ and keeps app/, config/ and storage/ out of reach:
 # every request is served from the public folder.
 RewriteCond %{REQUEST_URI} !/public/
 RewriteRule ^(.*)$ public/$1 [L]

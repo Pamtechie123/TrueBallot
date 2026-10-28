@@ -41,7 +41,8 @@ final class Notifier
             'If this was you, you can ignore this email. If not, reset your password right away.',
         ], 'Reset password', '/forgot-password');
     }
-        /** A voter changed their details: tell them it needs approval again, and tell the admins. */
+
+    /** A voter changed their details: tell them it needs approval again, and tell the admins. */
     public static function detailsNeedReview(User $user): void
     {
         self::send($user, 'Your details were updated and need approval', [
@@ -97,6 +98,15 @@ final class Notifier
     }
 
     // ------------------------------------------------------------------ candidates
+
+    /** The administrator added this person as a candidate (only sent when an email was given). */
+    public static function candidateAdded(string $email, string $name, string $positionTitle, string $electionTitle): void
+    {
+        self::sendTo($email, $name, 'You are now a candidate', [
+            'You have been added as a candidate for <strong>' . e($positionTitle) . '</strong> in <strong>' . e($electionTitle) . '</strong>.',
+            'Your name will appear on the ballot when voting opens.',
+        ]);
+    }
 
     public static function applicationReceived(User $user, Position $position, Election $election): void
     {

@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Core\Auth;
 use App\Core\Controller;
 use App\Interfaces\RoleInterface;
+use App\Models\Candidate;
 use App\Models\Election;
 use App\Models\Position;
 
@@ -39,6 +40,7 @@ final class DashboardController extends Controller
 
         $this->view('dashboard/index', [
             'user'         => $user,
+            'candidacies'  => Candidate::forUser($user->id()),
             'elections'    => $elections,
             'openCount'    => $counts['voting_open'],
             'applyCount'   => $counts['applications_open'],

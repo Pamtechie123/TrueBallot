@@ -1,6 +1,6 @@
 <section class="hero">
     <h1>Online elections, from registration to results</h1>
-    <p class="lead">TrueBallot lets approved voters take part in elections, apply to contest a position, and see published results.</p>
+    <p class="lead">TrueBallot lets approved voters take part in elections, and see published results. Candidates are registered by the election administrator.</p>
 
     <?php if ($currentUser === null): ?>
         <p class="actions">
@@ -20,7 +20,7 @@
         <li><strong>Register.</strong> Create an account with your details.</li>
         <li><strong>Get approved.</strong> An administrator reviews your registration.</li>
         <li><strong>Receive your voter card.</strong> Once approved, your digital voter card appears on your dashboard.</li>
-        <li><strong>Vote or contest.</strong> Vote once for each position in an open election, or apply to be a candidate.</li>
+        <li><strong>Vote or contest.</strong> Vote once for each position in an open election. Candidates are added by the administrator.</li>
         <li><strong>See the results.</strong> Results appear after the administrator publishes them.</li>
     </ol>
 </section>

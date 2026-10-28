@@ -1,77 +1,64 @@
 <?php
-/** @var string $filter */
-/** @var string[] $filters */
-/** @var \App\Models\CandidateApplication[] $applications */
-/** @var string[] $feeStatuses */
+/** @var \App\Models\Candidate[] $candidates */
+
+// Group the candidates by election, then by position.
+$grouped = [];
+foreach ($candidates as $candidate) {
+    $grouped[$candidate->electionTitle()][$candidate->positionTitle()][] = $candidate;
+}
 ?>
-<h1>Candidate applications</h1>
+<h1>Candidates</h1>
 
-<nav class="filters" aria-label="Filter applications by status">
-    <?php foreach ($filters as $option): ?>
-        <a href="<?= e(url('/admin/candidates?status=' . $option)) ?>"
-           class="<?= $filter === $option ? 'active' : '' ?>"
-           <?= $filter === $option ? 'aria-current="page"' : '' ?>><?= e(label($option)) ?></a>
-    <?php endforeach; ?>
-</nav>
+<p class="lead">Only you, the administrator, can put someone on a ballot. Add each candidate with their photo and manifesto before voting starts.</p>
+<p><a class="btn" href="<?= e(url('/admin/candidates/new')) ?>">Add a candidate</a></p>
 
-<?php if ($applications === []): ?>
-    <p>No applications found for this filter.</p>
+<?php if ($candidates === []): ?>
+    <div class="notice">There are no candidates yet. Click <strong>Add a candidate</strong> to put the first person on a ballot.</div>
 <?php endif; ?>
 
-<?php foreach ($applications as $app): ?>
-    <article class="card election">
-        <header class="election-head">
-            <h3><?= e($app->displayName()) ?></h3>
-            <?= status_badge($app->status()) ?>
-        </header>
+<?php foreach ($grouped as $electionTitle => $positions): ?>
+    <section class="card election">
+        <h2><?= e($electionTitle) ?></h2>
 
-        <p class="muted">
-            Applying for <strong><?= e($app->positionTitle()) ?></strong> in <?= e($app->electionTitle()) ?>
-            (<?= e(phase_label($app->electionPhase())) ?>)
-        </p>
-        <?php if (\App\Services\PhotoStorage::exists($app->userId())): ?>
-            <img class="photo-preview" src="<?= e(url('/photo?user=' . $app->userId() . '&v=' . \App\Services\PhotoStorage::version($app->userId()))) ?>" alt="Photo of <?= e($app->applicantName()) ?>" width="80" height="100">
-        <?php else: ?>
-            <p class="hint">No photo uploaded.</p>
-        <?php endif; ?>
-        <p class="muted">
-            Applicant: <?= e($app->applicantName()) ?>, <?= e($app->applicantEmail()) ?>,
-            age <?= $app->applicantAge() ?>, <?= e($app->applicantState()) ?>.
-            Minimum age for this position: <?= $app->minCandidateAge() ?>.
-        </p>
-        <blockquote class="manifesto"><?= nl2br(e($app->manifesto())) ?></blockquote>
-
-        <p>Application fee: <strong><?= e(naira($app->feeAmount())) ?></strong> <?= status_badge($app->feeStatus()) ?>
-            <span class="hint">(demonstration only, no real payment)</span></p>
-
-        <div class="row-actions">
-            <form class="inline-fields" method="post" action="<?= e(url('/admin/candidates/fee')) ?>">
-                <?= csrf_field() ?>
-                <input type="hidden" name="application_id" value="<?= $app->id() ?>">
-                <input type="hidden" name="return" value="<?= e($filter) ?>">
-                <div class="field">
-                    <label for="fee-<?= $app->id() ?>">Fee status</label>
-                    <select id="fee-<?= $app->id() ?>" name="fee_status">
-                        <?php foreach ($feeStatuses as $fee): ?>
-                            <option value="<?= e($fee) ?>" <?= $fee === $app->feeStatus() ? 'selected' : '' ?>><?= e(label($fee)) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-secondary btn-small">Save fee</button>
-            </form>
-
-            <?php if ($app->status() === 'pending'): ?>
-                <?php foreach ([['approve', 'Approve', ''], ['reject', 'Reject', 'btn-danger']] as [$decision, $text, $style]): ?>
-                    <form class="inline-form" method="post" action="<?= e(url('/admin/candidates/review')) ?>">
-                        <?= csrf_field() ?>
-                        <input type="hidden" name="application_id" value="<?= $app->id() ?>">
-                        <input type="hidden" name="decision" value="<?= e($decision) ?>">
-                        <input type="hidden" name="return" value="<?= e($filter) ?>">
-                        <button type="submit" class="btn btn-small <?= e($style) ?>"
-                                data-confirm="<?= e($text . ' ' . $app->displayName() . '?') ?>"><?= e($text) ?></button>
-                    </form>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-    </article>
+        <?php foreach ($positions as $positionTitle => $list): ?>
+            <h3><?= e($positionTitle) ?> <span class="muted">(<?= count($list) ?>)</span></h3>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr>
+                        <th scope="col">Photo</th><th scope="col">Name</th><th scope="col">Party</th>
+                        <th scope="col" class="num">Age</th><th scope="col">Fee</th><th scope="col">Action</th>
+                    </tr></thead>
+                    <tbody>
+                    <?php foreach ($list as $c): $editable = $c->election()?->canEditSetup() ?? false; ?>
+                        <tr>
+                            <td>
+                                <?php if ($c->hasPhoto()): ?>
+                                    <img class="photo-preview" src="<?= e($c->photoUrl()) ?>" alt="Photo of <?= e($c->displayName()) ?>" width="48" height="60">
+                                <?php endif; ?>
+                            </td>
+                            <td><?= e($c->displayName()) ?><?= $c->email() !== '' ? '<br><span class="hint">' . e($c->email()) . '</span>' : '' ?></td>
+                            <td><?= $c->party() !== '' ? e($c->party()) : '<span class="muted">Independent</span>' ?></td>
+                            <td class="num"><?= $c->age() ?></td>
+                            <td><?= status_badge($c->feeStatus()) ?></td>
+                            <td>
+                                <?php if ($editable): ?>
+                                    <div class="row-actions">
+                                        <a class="btn btn-secondary btn-small" href="<?= e(url('/admin/candidates/edit?id=' . $c->id())) ?>">Edit</a>
+                                        <form class="inline-form" method="post" action="<?= e(url('/admin/candidates/delete')) ?>">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden" name="candidate_id" value="<?= $c->id() ?>">
+                                            <button type="submit" class="btn btn-danger btn-small" data-confirm="Remove <?= e($c->displayName()) ?> from the ballot?">Remove</button>
+                                        </form>
+                                    </div>
+                                <?php else: ?>
+                                    <span class="hint">Locked: voting has started</span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endforeach; ?>
+    </section>
 <?php endforeach; ?>

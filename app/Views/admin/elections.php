@@ -23,7 +23,7 @@
             <?= field_error('description') ?>
         </div>
 
-        <h3>1. When can voters apply as candidates?</h3>
+        <h3>1. Candidate registration period (when you add candidates)</h3>
         <div class="field-row">
             <div class="field">
                 <label for="applications_open_at">Applications open</label>
@@ -84,7 +84,7 @@
 
             <h4>Positions</h4>
             <?php if ($item['positions'] === []): ?>
-                <p class="muted">No positions yet. Add at least one so voters can apply.</p>
+                <p class="muted">No positions yet. Add at least one so you can add candidates.</p>
             <?php else: ?>
                 <div class="table-wrap">
                     <table class="table">
@@ -126,7 +126,7 @@
             <?php
             // Buttons to move the election on now, instead of waiting for the dates.
             $shortcut = match ($phase) {
-                'applications_open' => ['/admin/elections/close-applications', 'Close applications now', 'Stop accepting candidate applications for this election now?', 'Candidates can apply until you close applications or the closing date passes.'],
+                'applications_open' => ['/admin/elections/close-applications', 'Close applications now', 'Stop accepting candidate applications for this election now?', 'You can add candidates until you close applications or the closing date passes.'],
                 'waiting'           => ['/admin/elections/start-voting', 'Start voting now', 'Open voting for this election now?', 'Applications are closed. Voting starts on the date above, or now if you click the button.'],
                 'voting_open'       => ['/admin/elections/end-voting', 'End voting now', 'End voting now? Voters will no longer be able to vote.', 'End voting to be able to publish the results.'],
                 default             => null,
