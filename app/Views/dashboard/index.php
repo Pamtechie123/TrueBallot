@@ -1,6 +1,7 @@
 <?php
 /** @var \App\Models\User $user */
 /** @var array $elections */
+/** @var \App\Models\Candidate[] $candidacies */
 /** @var int $openCount */
 /** @var int $applyCount */
 /** @var int $resultsCount */
@@ -8,6 +9,10 @@
 <h1>Welcome, <?= e($user->fullName()) ?></h1>
 
 <p>Account status: <?= status_badge($user->status()) ?></p>
+
+<?php foreach ($candidacies as $c): ?>
+    <div class="notice"><strong>You are a candidate.</strong> The administrator added you for <strong><?= e($c->positionTitle()) ?></strong> in <?= e($c->electionTitle()) ?>.</div>
+<?php endforeach; ?>
 
    <?php if ($user->isApproved()): ?>
        <?php $hasPhoto = \App\Services\PhotoStorage::exists($user->id()); ?>
@@ -54,10 +59,8 @@
         <h2 id="elections-heading">Elections</h2>
         <div class="tiles">
             <a class="tile tile-link" href="<?= e(url('/vote')) ?>"><p class="tile-number"><?= (int) $openCount ?></p><p class="tile-label">Open for voting. Go and vote</p></a>
-            <a class="tile tile-link" href="<?= e(url('/candidates/apply')) ?>"><p class="tile-number"><?= (int) $applyCount ?></p><p class="tile-label">Accepting candidate applications</p></a>
             <a class="tile tile-link" href="<?= e(url('/results')) ?>"><p class="tile-number"><?= (int) $resultsCount ?></p><p class="tile-label">With published results</p></a>
         </div>
-        <p><a href="<?= e(url('/candidates/applications')) ?>">See my candidate applications</a></p>
 
         <h3>All elections</h3>
         <?php if ($elections === []): ?>
@@ -71,6 +74,16 @@
                 </header>
                 <?php if ($el->description() !== ''): ?><p><?= e($el->description()) ?></p><?php endif; ?>
 
+                <?php
+                $stage = ['upcoming' => 0, 'applications_open' => 0, 'waiting' => 1, 'voting_open' => 2, 'voting_closed' => 2, 'results_published' => 3][$phase] ?? 0;
+                $stepNames = ['Registration', 'Candidates set', 'Voting', 'Results'];
+                ?>
+                <ol class="stepper" aria-label="Election progress">
+                    <?php foreach ($stepNames as $i => $name): ?>
+                        <li class="<?= $i < $stage ? 'done' : ($i === $stage ? 'now' : '') ?>"><?= e($name) ?></li>
+                    <?php endforeach; ?>
+                </ol>
+
                 <ul class="timeline">
                     <li><strong>Applications:</strong> <?= e(format_datetime($el->applicationsOpenAt())) ?> to <?= e(format_datetime($el->applicationsCloseAt())) ?></li>
                     <li><strong>Voting:</strong> <?= e(format_datetime($el->startsAt())) ?> to <?= e(format_datetime($el->endsAt())) ?></li>
@@ -80,8 +93,7 @@
                 </p>
 
                 <?php if ($phase === 'applications_open' && $item['positions'] !== []): ?>
-                    <p><a class="btn btn-small" href="<?= e(url('/candidates/apply')) ?>">Apply for a position</a></p>
-                    <p class="hint">Applications close on <?= e(format_datetime($el->applicationsCloseAt())) ?>.</p>
+                    <p class="hint">The administrator is registering the candidates. Registration closes on <?= e(format_datetime($el->applicationsCloseAt())) ?>.</p>
                 <?php elseif ($phase === 'applications_open'): ?>
                     <p class="hint">Applications are open, but the administrator has not added positions yet.</p>
                 <?php elseif ($phase === 'upcoming'): ?>

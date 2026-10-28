@@ -60,7 +60,10 @@ function url(string $path = '/'): string
 /** Link to a file in public/assets */
 function asset(string $path): string
 {
-    return url('assets/' . ltrim($path, '/'));
+    $path = ltrim($path, '/');
+    $file = BASE_PATH . '/public/assets/' . $path;
+    $version = is_file($file) ? '?v=' . filemtime($file) : '';   // a new version number makes browsers load the new file
+    return url('assets/' . $path) . $version;
 }
 
 function redirect(string $path): never

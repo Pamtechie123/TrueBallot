@@ -26,7 +26,7 @@ $isAdminShell = $currentUser !== null && $currentUser->canAccess(RoleInterface::
     ?>
 <div class="admin-shell">
     <aside class="sidebar" aria-label="Admin navigation">
-        <a class="brand" href="<?= e(url('/')) ?>">TrueBallot <span>Admin</span></a>
+        <a class="brand" href="<?= e(url('/')) ?>"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="14" width="24" height="14" rx="3" fill="#f5b301"/><rect x="11" y="12" width="10" height="3" rx="1.5" fill="#0b1f4b"/><path d="M12 4h8l1 8H11z" fill="#fff"/><path d="m13.5 8.5 2 2 3.5-4" fill="none" stroke="#0f8a4f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>TrueBallot <b>Admin</b></span></a>
         <?php foreach ($nav as $label => $href): ?>
             <a href="<?= e(url($href)) ?>"<?= str_ends_with($path, $href) ? ' class="active"' : '' ?>><?= e($label) ?></a>
         <?php endforeach; ?>
@@ -42,7 +42,7 @@ $isAdminShell = $currentUser !== null && $currentUser->canAccess(RoleInterface::
 <?php else: ?>
 <header class="site-header">
     <div class="header-inner">
-        <a class="brand" href="<?= e(url('/')) ?>">TrueBallot</a>
+        <a class="brand" href="<?= e(url('/')) ?>"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="14" width="24" height="14" rx="3" fill="#f5b301"/><rect x="11" y="12" width="10" height="3" rx="1.5" fill="#0b1f4b"/><path d="M12 4h8l1 8H11z" fill="#fff"/><path d="m13.5 8.5 2 2 3.5-4" fill="none" stroke="#0f8a4f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>TrueBallot</a>
 
         <nav aria-label="Main navigation">
             <?php if ($currentUser !== null): ?>
